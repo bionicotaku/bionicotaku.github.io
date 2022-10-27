@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="lihan" />
+    <meta name="description" content="blog" />
+
+    <title>my index</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <img class="index-coverimg"
+             style="background:center center / cover no-repeat;" alt="" src="assets/img/index_background.jpg">
+        <div class="index-cover--overlay"></div>
+
+        <div class="index-main" style="user-select: none;">
+            <a href="html/about.html">
+                <figure class="pika">
+                    <img class="pika-img" src="assets/img/pika.png" alt="">
+                    <div class="pika-eye pika-eye-left">
+                        <img class="pika-eye-img" src="assets/img/pika-left-eye.png" alt="">
+                    </div>
+                    <div class="pika-eye pika-eye-right">
+                        <img class="pika-eye-img" src="assets/img/pika-right-eye.png" alt="">
+                    </div>
+                </figure>
+            </a>
+
+            <h1 class="index-title">Li han</h1>
+            <p class="index-banner"><br>Silence is loud<br>deafening</p>
+            <hr class="index-page-divider">
+            <p  class="index-click-description">点击头像进入</p>
+        </div>
+
+    </header>
+
+    <script>//眼睛跟随鼠标转动
+    const background = document.querySelector('body');
+    const pika = document.querySelector('.pika');
+    const current = {
+        px: 0.6,
+        py: 0.6
+    };
+    const target = { ...current };
+
+    background.addEventListener('mousemove', onMouseMove);
+    background.addEventListener('mouseleave', onMouseLeave);
+
+    function onMouseMove({ clientX: x, clientY: y }) {
+        let px = (x - background.getBoundingClientRect().x) / background.getBoundingClientRect().width;
+        let py = (y - background.getBoundingClientRect().y) / background.getBoundingClientRect().height;
+        target.px = px;
+        target.py = py;
+    }
+
+    function onMouseLeave() {
+        target.px = 0.6;
+        target.py = 0.6;
+    }
+
+    function update() {
+        for (let prop in target) {
+            if (target[prop] === current[prop]) {
+                continue;
+            } else if (Math.abs(target[prop] - current[prop]) < 0.01) {
+                current[prop] = target[prop];
+            } else {
+                current[prop] += (target[prop] - current[prop]) * 0.1;
+            }
+            pika.style.setProperty(`--${prop}`, current[prop]);
+        }
+        requestAnimationFrame(update);
+    }
+    update();
+    </script>
+</body>
+</html>
